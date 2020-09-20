@@ -32,10 +32,14 @@ h1, h4 {
     margin: .25em 0;
     border-radius: 5px;
     border: none;
-    height: 25px;
+    height: 40px;
 }
 
 .more-info {
+  font-size: .75em;
+}
+
+input[type="text"], [type="number"] {
   font-size: .75em;
 }
 
@@ -43,9 +47,10 @@ h1, h4 {
     border:3px solid #bc4749;;
     background-color: #bc4749;
     color: #f2e8cf;
-    font-size: .5em;
+    font-size: 1em;
     font-weight: bold;
     border-radius: 3px;
+    height: 40px;
 }
 
 hr {

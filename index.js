@@ -1,15 +1,16 @@
 'use strict';
 
 const apiKey = 'IsEd78G2ENjxkgImF6XbXQAMnjD7zGtZ2wk6ns8Y'; 
-const searchURL = 'https://developer.nps.gov/api/v1/parks';
+const searchURL = 'https://api.nps.gov/api/v1/parks';
 
 function formatQueryParams(params) {
   const queryItems = Object.keys(params)
-    .map(key => `${key}=${(params[key])}`)
+    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
   return queryItems.join('&');
 }
 
 function displayResults(responseJson, maxResults) {
+  console.log(responseJson);
   $('.results-list').empty();
   for (let i = 0; i < responseJson.data.length; i++){
     let parkInfo = `
@@ -17,7 +18,7 @@ function displayResults(responseJson, maxResults) {
         <li>
           <h4>${responseJson.data[i].fullName}</h4>
           <p><a href="${responseJson.data[i].url}" target="_blank">${responseJson.data[i].url}</a></p>
-          <p>${responseJson.data[i].addresses[0].line1}; ${responseJson.data[i].addresses[0].city}, ${responseJson.data[i].addresses[0].stateCode}; ${responseJson.data[i].addresses[0].postalCode}</p>
+          <p>${responseJson.data[i].addresses[0].line1}, ${responseJson.data[i].addresses[0].city}, ${responseJson.data[i].addresses[0].stateCode}, ${responseJson.data[i].addresses[0].postalCode}</p>
           <p>${responseJson.data[i].description}</p>
           <hr>          
         </li>
@@ -38,6 +39,8 @@ function getParks(searchTerm, maxResults=10) {
 
   const queryString = formatQueryParams(params)
   const url = searchURL + '?' + queryString;
+  
+  console.log(url);
 
   fetch(url)
     .then(response => {
@@ -55,7 +58,7 @@ function getParks(searchTerm, maxResults=10) {
 function watchForm() {
   $('form').submit(event => {
     event.preventDefault();
-    const searchTerm = $('#js-search-term').val().split(' ').join('');
+    const searchTerm = $('#js-search-term').val().split(",");
     const maxResults = $('#js-max-results').val();
     getParks(searchTerm, maxResults);
     console.log(searchTerm)
